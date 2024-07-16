@@ -14,24 +14,13 @@ _whitespace_re = re.compile(r'\s+')
 
 # List of (regular expression, replacement) pairs for abbreviations:
 _abbreviations = [(re.compile('\\b%s\\.' % x[0], re.IGNORECASE), x[1]) for x in [
-  ('mrs', 'misess'),
-  ('mr', 'mister'),
-  ('dr', 'doctor'),
-  ('st', 'saint'),
-  ('co', 'company'),
-  ('jr', 'junior'),
-  ('maj', 'major'),
-  ('gen', 'general'),
-  ('drs', 'doctors'),
-  ('rev', 'reverend'),
-  ('lt', 'lieutenant'),
-  ('hon', 'honorable'),
-  ('sgt', 'sergeant'),
-  ('capt', 'captain'),
-  ('esq', 'esquire'),
-  ('ltd', 'limited'),
-  ('col', 'colonel'),
-  ('ft', 'fort'),
+  ('g', 'enggak'),
+  ('ga', 'enggak'),
+  ('bpk', 'bapak'),
+  ('sdr', 'saudara'),
+  ('dst', 'dan seterusnya'),
+  ('dll', 'dan lain-lain'),
+  ('kpd', 'kepada')
 ]]
 
 
@@ -62,21 +51,21 @@ def _expand_dollars(m):
   match = m.group(1)
   parts = match.split('.')
   if len(parts) > 2:
-    return match + ' dollars'  # Unexpected format
-  dollars = int(parts[0]) if parts[0] else 0
+    return match + ' rupiah'  # Unexpected format
+  rupiah = int(parts[0]) if parts[0] else 0
   cents = int(parts[1]) if len(parts) > 1 and parts[1] else 0
-  if dollars and cents:
-    dollar_unit = 'dollar' if dollars == 1 else 'dollars'
+  if rupiah and cents:
+    rupiah_unit = 'rupiah' if rupiah == 1 else 'rupiah'
     cent_unit = 'cent' if cents == 1 else 'cents'
-    return '%s %s, %s %s' % (dollars, dollar_unit, cents, cent_unit)
-  elif dollars:
-    dollar_unit = 'dollar' if dollars == 1 else 'dollars'
-    return '%s %s' % (dollars, dollar_unit)
+    return '%s %s, %s %s' % (rupiah, rupiah_unit, cents, cent_unit)
+  elif rupiah:
+    rpiah_unit = 'dollar' if rupiah == 1 else 'dollars'
+    return '%s %s' % (rupiah, rupiah)
   elif cents:
     cent_unit = 'cent' if cents == 1 else 'cents'
     return '%s %s' % (cents, cent_unit)
   else:
-    return 'zero dollars'
+    return 'nol rupiah'
 
 
 def _expand_ordinal(m):
@@ -87,11 +76,11 @@ def _expand_number(m):
   num = int(m.group(0))
   if num > 1000 and num < 3000:
     if num == 2000:
-      return 'two thousand'
+      return 'dua ribu'
     elif num > 2000 and num < 2010:
-      return 'two thousand ' + _inflect.number_to_words(num % 100)
+      return 'dua ribu ' + _inflect.number_to_words(num % 100)
     elif num % 100 == 0:
-      return _inflect.number_to_words(num // 100) + ' hundred'
+      return _inflect.number_to_words(num // 100) + ' ratus'
     else:
       return _inflect.number_to_words(num, andword='', zero='oh', group=2).replace(', ', ' ')
   else:
@@ -166,7 +155,7 @@ def lev_distance(s1, s2):
   return distances[-1]
 
 
-DEFAULT_VOCAB_FILE = os.path.join(os.path.dirname(os.path.realpath(__file__)), '../data/tokenizer.json')
+DEFAULT_VOCAB_FILE = os.path.join(os.path.dirname(os.path.realpath(__file__)), '../data/custom_language_tokenizer.json')
 
 
 class VoiceBpeTokenizer:
