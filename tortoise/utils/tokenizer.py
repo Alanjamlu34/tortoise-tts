@@ -20,7 +20,8 @@ _abbreviations = [(re.compile('\\b%s\\.' % x[0], re.IGNORECASE), x[1]) for x in 
   ('sdr', 'saudara'),
   ('dst', 'dan seterusnya'),
   ('dll', 'dan lain-lain'),
-  ('kpd', 'kepada')
+  ('kpd', 'kepada'),
+  ('yg', 'yang')
 ]]
 
 
